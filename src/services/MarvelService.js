@@ -5,7 +5,7 @@
 // returns json object
 class MarvelService {
   // optimizing API usage
-  _apiBase = "https://gateway.marvel.com:443/v1/public/";
+  _apiBase = "https://gateway.marvel.com:443/v1/publi/";
   _apiKey = "apikey=0035f282508bc66b43767a3b05726668";
 
   getResources = async (url) => {
