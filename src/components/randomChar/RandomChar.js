@@ -7,11 +7,6 @@ import "./randomChar.scss";
 import mjolnir from "../../resources/img/mjolnir.png";
 
 class RandomChar extends Component {
-  //calling method from constructor. BAD PRACTICE will FIX
-  constructor(props) {
-    super(props);
-    this.updateChar();
-  }
   // creating state
   // creating char obj for each character
   state = {
@@ -23,10 +18,25 @@ class RandomChar extends Component {
   //creating new property inside RandomChar class
   marvelService = new MarvelService();
 
+  // launch update func on mount
+  //react lifecycle hook
+  componentDidMount() {
+    this.updateChar();
+    // this.timerId = setInterval(this.updateChar, 10000);
+  }
+  //react lifecycle hook
+  //clear update interval
+  componentWillUnmount() {
+    clearInterval(this.timerId);
+  }
   // method to update character
   // modified for loader
   onCharLoaded = (char) => {
     this.setState({ char, loading: false });
+  };
+  // method for spinner etc.
+  onCharLoading = () => {
+    this.setState({ loading: true });
   };
 
   // 404 error handling
@@ -42,6 +52,7 @@ class RandomChar extends Component {
   updateChar = () => {
     //gen random id with min-max range for id value
     const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+    this.onCharLoading();
     this.marvelService
       .getCharacter(id)
       .then(this.onCharLoaded)
@@ -67,7 +78,7 @@ class RandomChar extends Component {
             Do you want to get to know him better?
           </p>
           <p className="randomchar__title">Or choose another one</p>
-          <button className="button button__main">
+          <button className="button button__main" onClick={this.updateChar}>
             <div className="inner">try it</div>
           </button>
           <img src={mjolnir} alt="mjolnir" className="randomchar__decoration" />
